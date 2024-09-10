@@ -13,6 +13,13 @@ class OrcamentoController extends Controller
     {
         $query = Orcamento::query();
 
+        // Verificar se há um cliente_id na solicitação
+        if ($request->has('cliente_id')) {
+            $clienteId = $request->input('cliente_id');
+            $query->where('cliente_id', $clienteId);
+        }
+
+        // Pesquisa genérica
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -23,8 +30,8 @@ class OrcamentoController extends Controller
             });
         }
 
-    $orcamentos = $query->paginate(10);
-    return view('orcamentos.index', compact('orcamentos'));
+        $orcamentos = $query->paginate(10);
+        return view('orcamentos.index', compact('orcamentos'));
     }
 
     // Mostra o formulário para criar um novo orçamento
