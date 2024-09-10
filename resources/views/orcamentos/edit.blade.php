@@ -7,7 +7,7 @@
 <body>
     <div class="container mt-4">
         <h1>Editar Orçamento</h1>
-        <form action="{{ route('orcamentos.update', $orcamento->id) }}" method="POST">
+        <form action="{{ route('orcamentos.update', $orcamento->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -35,6 +35,13 @@
             <div class="form-group">
                 <label for="preco">Preço</label>
                 <input type="text" name="preco" class="form-control" id="preco" value="{{ $orcamento->preco }}" required>
+            </div>
+            <div>
+                <label for="arquivo">Arquivo</label>
+                <input type="file" id="arquivo" name="arquivo">
+                @if($orcamento->arquivo)
+                    <p>Arquivo Atual: <a href="{{ asset('storage/' . $orcamento->arquivo) }}" target="_blank">Visualizar</a></p>
+                @endif
             </div>
             <button type="submit" class="btn btn-primary">Atualizar</button>
             <a href="{{ route('orcamentos.index') }}" class="btn btn-secondary">Cancelar</a>

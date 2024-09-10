@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Orcamento;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class OrcamentoController extends Controller
 {
@@ -50,9 +51,19 @@ class OrcamentoController extends Controller
             'orientacao' => 'required|string|max:255',
             'instalacao' => 'required|string|max:255',
             'preco' => 'required|numeric',
+            'arquivo' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
         ]);
 
-        Orcamento::create($request->all());
+        $data = $request->except('arquivo');
+        
+        if ($request->hasFile('arquivo')) {
+            $file = $request->file('arquivo');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public', $filename);
+            $data['arquivo'] = $filename;
+        }
+
+        Orcamento::create($data);
 
         return redirect()->route('orcamentos.index')->with('success', 'Orçamento criado com sucesso.');
     }
@@ -79,9 +90,24 @@ class OrcamentoController extends Controller
             'orientacao' => 'required|string|max:255',
             'instalacao' => 'required|string|max:255',
             'preco' => 'required|numeric',
+            'arquivo' => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
         ]);
 
-        $orcamento->update($request->all());
+        $data = $request->except('arquivo');
+        
+        if ($request->hasFile('arquivo')) {
+            // Remove o arquivo antigo se existir
+            if ($orcamento->arquivo) {
+                Storage::delete('public/' . $orcamento->arquivo);
+            }
+
+            $file = $request->file('arquivo');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public', $filename);
+            $data['arquivo'] = $filename;
+        }
+
+        $orcamento->update($data);
 
         return redirect()->route('orcamentos.index')->with('success', 'Orçamento atualizado com sucesso.');
     }
@@ -89,6 +115,11 @@ class OrcamentoController extends Controller
     // Remove um orçamento do banco de dados
     public function destroy(Orcamento $orcamento)
     {
+        // Remove o arquivo associado se existir
+        if ($orcamento->arquivo) {
+            Storage::delete('public/' . $orcamento->arquivo);
+        }
+
         $orcamento->delete();
 
         return redirect()->route('orcamentos.index')->with('success', 'Orçamento excluído com sucesso.');

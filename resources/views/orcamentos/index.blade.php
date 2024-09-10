@@ -9,8 +9,8 @@
 <body>
     <div class="container">
         <h1>Lista de Orçamentos</h1>
-        <a href="{{ url('/orcamentos/create') }}">Criar Novo Orçamento</a>
-        <form method="GET" action="{{ url('/orcamentos') }}">
+        <a href="{{ route('orcamentos.create') }}">Criar Novo Orçamento</a>
+        <form method="GET" action="{{ route('orcamentos.index') }}">
             <input type="text" name="search" placeholder="Buscar por KWp, Orientação, Instalação ou Preço..." value="{{ request('search') }}">
             <button type="submit">Pesquisar</button>
         </form>
@@ -24,6 +24,7 @@
                     <th>Instalação</th>
                     <th>Preço</th>
                     <th>Cliente</th>
+                    <th>Arquivo</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -37,8 +38,15 @@
                         <td>{{ $orcamento->preco }}</td>
                         <td>{{ $orcamento->cliente->nome }}</td>
                         <td>
-                            <a href="{{ url('/orcamentos/' . $orcamento->id . '/edit') }}">Editar</a>
-                            <form action="{{ url('/orcamentos/' . $orcamento->id) }}" method="POST" style="display:inline;">
+                            @if($orcamento->arquivo)
+                                <a href="{{ asset('storage/' . $orcamento->arquivo) }}" target="_blank">Visualizar</a>
+                            @else
+                                Nenhum arquivo
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('orcamentos.edit', $orcamento->id) }}">Editar</a>
+                            <form action="{{ route('orcamentos.destroy', $orcamento->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit">Excluir</button>

@@ -7,7 +7,7 @@
 <body>
     <div class="container mt-4">
         <h1>Criar Orçamento</h1>
-        <form action="{{ route('orcamentos.store') }}" method="POST">
+        <form action="{{ route('orcamentos.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="cliente_id">Cliente</label>
@@ -33,6 +33,11 @@
             <div class="form-group">
                 <label for="preco">Preço</label>
                 <input type="text" name="preco" class="form-control" id="preco" required>
+            </div>
+            <div>
+            <div>
+                <label for="arquivo">Arquivo</label>
+                <input type="file" id="arquivo" name="arquivo">
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
             <a href="{{ route('orcamentos.index') }}" class="btn btn-secondary">Cancelar</a>

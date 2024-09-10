@@ -11,15 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orcamentos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
-            $table->decimal('kwp', 8, 2);
-            $table->string('orientacao');
-            $table->string('instalacao');
-            $table->decimal('preco', 10, 2);
+        Schema::table('orcamentos', function (Blueprint $table) {
             $table->string('arquivo')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -28,7 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orcamentos');
         Schema::table('orcamentos', function (Blueprint $table) {
             $table->dropColumn('arquivo');
         });

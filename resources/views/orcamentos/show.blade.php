@@ -32,6 +32,20 @@
                 <th>Preço</th>
                 <td>{{ $orcamento->preco }}</td>
             </tr>
+            <tr>
+                <th>Arquivo</th>
+                <td>
+                    @if ($orcamento->arquivo)
+                        <a href="{{ asset('storage/' . $orcamento->arquivo) }}" target="_blank">
+                            <img src="{{ asset('storage/' . $orcamento->arquivo) }}" alt="Arquivo" style="max-width: 200px; max-height: 200px;">
+                        </a>
+                        <br>
+                        <a href="{{ asset('storage/' . $orcamento->arquivo) }}" download>Baixar Arquivo</a>
+                    @else
+                        Nenhum arquivo disponível
+                    @endif
+                </td>
+            </tr>
         </table>
         <a href="{{ route('orcamentos.index') }}" class="btn btn-secondary">Voltar</a>
     </div>
