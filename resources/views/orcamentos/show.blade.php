@@ -1,53 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Visualizar Orçamento</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Orçamento</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container mt-4">
-        <h1>Visualizar Orçamento</h1>
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <td>{{ $orcamento->id }}</td>
-            </tr>
-            <tr>
-                <th>Cliente</th>
-                <td>{{ $orcamento->cliente->nome }}</td>
-            </tr>
-            <tr>
-                <th>KWp</th>
-                <td>{{ $orcamento->kwp }}</td>
-            </tr>
-            <tr>
-                <th>Orientação</th>
-                <td>{{ $orcamento->orientacao }}</td>
-            </tr>
-            <tr>
-                <th>Instalação</th>
-                <td>{{ $orcamento->instalacao }}</td>
-            </tr>
-            <tr>
-                <th>Preço</th>
-                <td>{{ $orcamento->preco }}</td>
-            </tr>
-            <tr>
-                <th>Arquivo</th>
-                <td>
-                    @if ($orcamento->arquivo)
-                        <a href="{{ asset('storage/' . $orcamento->arquivo) }}" target="_blank">
-                            <img src="{{ asset('storage/' . $orcamento->arquivo) }}" alt="Arquivo" style="max-width: 200px; max-height: 200px;">
-                        </a>
-                        <br>
-                        <a href="{{ asset('storage/' . $orcamento->arquivo) }}" download>Baixar Arquivo</a>
-                    @else
-                        Nenhum arquivo disponível
-                    @endif
-                </td>
-            </tr>
-        </table>
-        <a href="{{ route('orcamentos.index') }}" class="btn btn-secondary">Voltar</a>
+        <h1>Detalhes do Orçamento</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">KWp: {{ $orcamento->kwp }}</h5>
+                <p class="card-text">Orientação: {{ $orcamento->orientacao }}</p>
+                <p class="card-text">Instalação: {{ $orcamento->instalacao }}</p>
+                <p class="card-text">Preço: {{ $orcamento->preco }}</p>
+                <p class="card-text">Cliente: {{ $orcamento->cliente->nome }}</p>
+                @if($orcamento->arquivo)
+                    <p class="card-text">Arquivo: <a href="{{ asset('storage/' . $orcamento->arquivo) }}" target="_blank">Visualizar</a></p>
+                @endif
+                <a href="{{ route('orcamentos.edit', $orcamento) }}" class="btn btn-warning">Editar</a>
+                <a href="{{ route('orcamentos.index') }}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

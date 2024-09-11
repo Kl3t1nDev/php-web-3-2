@@ -1,0 +1,12 @@
+email = cleitonferreiracostafilho@gmail.com
+senha = 142536
+
+php artisan tinker
+
+use App\Models\User;
+
+User::create([
+    'name' => 'admin',
+    'email' => 'cleitonferreiracostafilho@gmail.com',
+    'password' => bcrypt('142536'),
+]);

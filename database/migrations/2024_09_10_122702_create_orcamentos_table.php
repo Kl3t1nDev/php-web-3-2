@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('instalacao');
             $table->decimal('preco', 10, 2);
             $table->string('arquivo')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
