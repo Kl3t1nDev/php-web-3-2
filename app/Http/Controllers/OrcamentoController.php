@@ -6,13 +6,15 @@ use App\Models\Orcamento;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 
 class OrcamentoController extends Controller
 {
     // Lista todos os orçamentos do usuário logado com opção de pesquisa
     public function index(Request $request)
     {
-        $query = Orcamento::where('user_id', auth()->id());
+        $query = Orcamento::where('user_id', Auth::id());
 
         // Verificar se há um cliente_id na solicitação
         if ($request->has('cliente_id')) {
@@ -38,7 +40,7 @@ class OrcamentoController extends Controller
     // Mostra o formulário para criar um novo orçamento
     public function create()
     {
-        $clientes = Cliente::where('user_id', auth()->id())->get();
+        $clientes = Cliente::where('user_id', Auth::id())->get();
         return view('orcamentos.create', compact('clientes'));
     }
 
@@ -63,7 +65,7 @@ class OrcamentoController extends Controller
             $data['arquivo'] = $filename;
         }
 
-        $data['user_id'] = auth()->id(); // Atribuir o ID do usuário autenticado
+        $data['user_id'] = Auth::id(); // Atribuir o ID do usuário autenticado
 
         Orcamento::create($data);
 
@@ -73,8 +75,8 @@ class OrcamentoController extends Controller
     // Exibe os detalhes de um orçamento específico
     public function show(Orcamento $orcamento)
     {
-        if ($orcamento->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized access');
+        if ($orcamento->user_id !== Auth::id()) {
+            abort(403, 'UnAuthorized access');
         }
 
         return view('orcamentos.show', compact('orcamento'));
@@ -83,19 +85,19 @@ class OrcamentoController extends Controller
     // Mostra o formulário para editar um orçamento existente
     public function edit(Orcamento $orcamento)
     {
-        if ($orcamento->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized access');
+        if ($orcamento->user_id !== Auth::id()) {
+            abort(403, 'UnAuthorized access');
         }
 
-        $clientes = Cliente::where('user_id', auth()->id())->get();
+        $clientes = Cliente::where('user_id', Auth::id())->get();
         return view('orcamentos.edit', compact('orcamento', 'clientes'));
     }
 
     // Atualiza um orçamento existente no banco de dados
     public function update(Request $request, Orcamento $orcamento)
     {
-        if ($orcamento->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized access');
+        if ($orcamento->user_id !== Auth::id()) {
+            abort(403, 'UnAuthorized access');
         }
 
         $request->validate([
@@ -129,8 +131,8 @@ class OrcamentoController extends Controller
     // Remove um orçamento do banco de dados
     public function destroy(Orcamento $orcamento)
     {
-        if ($orcamento->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized access');
+        if ($orcamento->user_id !== Auth::id()) {
+            abort(403, 'UnAuthorized access');
         }
 
         // Remove o arquivo associado se existir

@@ -39,7 +39,7 @@
                             <td>{{ $cliente->id }}</td>
                             <td>{{ $cliente->nome }}</td>
                             <td>{{ $cliente->cpf }}</td>
-                            <td>{{ $cliente->data_nascimento->format('d/m/Y') }}</td>
+                            <td>{{ $cliente->data_nascimento_formatted }}</td>
                             <td>
                                 <a href="{{ route('clientes.show', $cliente->id) }}" class="btn btn-info btn-sm">Visualizar</a>
                                 <a href="{{ route('clientes.edit', $cliente->id) }}" class="btn btn-warning btn-sm">Editar</a>

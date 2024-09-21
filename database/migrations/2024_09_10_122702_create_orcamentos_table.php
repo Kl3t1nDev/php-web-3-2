@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('instalacao');
             $table->decimal('preco', 10, 2);
             $table->string('arquivo')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,9 +29,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orcamentos');
         Schema::table('orcamentos', function (Blueprint $table) {
+            $table->dropForeign(['user_id']); // Remove a chave estrangeira antes de dropar a coluna
+            $table->dropColumn('user_id');
             $table->dropColumn('arquivo');
         });
+
+        Schema::dropIfExists('orcamentos');
     }
 };

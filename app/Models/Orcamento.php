@@ -9,7 +9,7 @@ class Orcamento extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cliente_id', 'kwp', 'orientacao', 'instalacao', 'preco', 'arquivo'];
+    protected $fillable = ['cliente_id', 'kwp', 'orientacao', 'instalacao', 'preco', 'arquivo', 'user_id'];
 
     public function cliente()
     {
